@@ -1,0 +1,40 @@
+package com.example.enhancedartifact
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import com.example.enhancedartifact.ui.theme.EnhancedArtifactTheme
+import com.example.enhancedartifact.ui.theme.AddItemScreen
+
+class AddItem : ComponentActivity() {
+    private lateinit var inventoryDbHelper: InventoryDatabaseHelper
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // retrieve userId from intent, pass to helper
+        val userId = intent.getIntExtra("USER_ID", -1)
+        inventoryDbHelper = InventoryDatabaseHelper(this, userId)
+
+        // load ui
+        setContent {
+            AddItemScreen(
+                onAddItem = { name, quantity ->
+                    // check that input fields aren't blank
+                    if (name.isBlank() || quantity.isBlank()) {
+                        Toast.makeText(this, "Item name and quantity cannot be empty", Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        val number = quantity.toIntOrNull() ?: 0
+                        inventoryDbHelper.addItem(name, number)
+                        Toast.makeText(this, "Item Added", Toast.LENGTH_SHORT).show()
+                        // move to Inventory.kt
+                        startActivity(Intent(this, Inventory::class.java))
+                    }
+                }
+            )
+        }
+    }
+}

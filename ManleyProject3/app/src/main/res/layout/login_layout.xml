@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/purple_500">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Inventory Login"
+        android:textSize="55sp"
+        android:textColor="#FFAC"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="600sp"
+        android:background="@color/white">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:id="@+id/username"
+            android:inputType="text"
+            android:hint="Username"
+            android:textSize="30sp"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/username"
+            android:id="@+id/password"
+            android:inputType="textPassword"
+            android:hint="Password"
+            android:textSize="30sp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log in"
+            android:layout_below="@id/password"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/loginButton"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:layout_below="@id/loginButton"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/registerButton"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Inventory Login"
+        android:textSize="40sp"/>
+
+</LinearLayout>
