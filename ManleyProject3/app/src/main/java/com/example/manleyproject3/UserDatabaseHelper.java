@@ -7,6 +7,7 @@ public class UserDatabaseHelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "user_database.db";
     private static final int DATABASE_VERSION = 1;
 
+    // creates table
     private static final String SQL_CREATE_USERS_TABLE = "CREATE TABLE users (id INTEGER PRIMARY KEY " +
             "AUTOINCREMENT, username TEXT UNIQUE, password TEXT)";
 
@@ -19,6 +20,7 @@ public class UserDatabaseHelper extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_USERS_TABLE);
     }
 
+    // handles table upgrades
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS users");

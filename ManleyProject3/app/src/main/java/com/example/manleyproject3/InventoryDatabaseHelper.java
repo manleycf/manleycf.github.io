@@ -9,6 +9,7 @@ public class InventoryDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "inventory_database.db";
     private static final int DATABASE_VERSION = 1;
 
+    // creates table
     private static final String SQL_CREATE_INVENTORY_TABLE = "CREATE TABLE inventory (item_name TEXT, quantity INTEGER)";
 
     public InventoryDatabaseHelper(Context context) {
@@ -20,17 +21,20 @@ public class InventoryDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_INVENTORY_TABLE);
     }
 
+    // handles table upgrades
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS inventory");
         onCreate(db);
     }
 
+    // get all items for grid display
     public Cursor getAllItems() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM inventory", null);
     }
 
+    // add new item to database
     public void add_item(String name, int quantity) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -39,6 +43,7 @@ public class InventoryDatabaseHelper extends SQLiteOpenHelper {
         db.insert("inventory", null, values);
     }
 
+    // remove item from database
     public void delete_item(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         String whereClause = "item_name=?";
@@ -47,6 +52,7 @@ public class InventoryDatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    // change item in database
     public void updateItem(String itemName, int newQuantity) {
         SQLiteDatabase db = this.getWritableDatabase();
 

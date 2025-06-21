@@ -26,12 +26,15 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
 
+        // create user database helper
         userDbHelper = new UserDatabaseHelper(this);
+        // assign editTexts and buttons to variables
         usernameEdit = findViewById(R.id.username);
         passwordEdit = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
 
+        // listener for register button
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        // listener for login button
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,40 +52,49 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void registerUser() {
+        // get text from fields
         String username = usernameEdit.getText().toString().trim();
         String password = passwordEdit.getText().toString().trim();
 
+        // handle empty fields
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Username and password cannot be empty", Toast.LENGTH_SHORT).show();
             return;
         }
         try {
+            // add username/password combo to user database
             SQLiteDatabase db = userDbHelper.getWritableDatabase();
             db.execSQL("INSERT INTO users (username, password) VALUES (?, ?)", new Object[]{username, password});
             db.close();
             Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show();
+            // error message
         } catch (Exception e) {
             Toast.makeText(this, "Registration failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void loginUser() {
+        // get text from fields
         String username = usernameEdit.getText().toString().trim();
         String password = passwordEdit.getText().toString().trim();
 
+        // handle empty fields
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Username and password cannot be empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // search user database for provided username/password combo
         SQLiteDatabase db = userDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM users WHERE username = ? AND PASSWORD = ?", new String[]{username, password});
 
+        // if valid combo move to inventory screen
         if (cursor.moveToFirst()) {
             Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this, Inventory.class);
             startActivity(intent);
         }
+        // failed login message
         else {
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
         }
