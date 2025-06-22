@@ -1,0 +1,41 @@
+package com.example.enhancedartifact
+
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import com.example.enhancedartifact.ui.theme.InventoryScreen
+
+class Inventory : ComponentActivity() {
+
+    private lateinit var dbHelper: InventoryDatabaseHelper
+
+    // load instance state
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // retrieve userId from intent, pass to helper
+        val userId = intent.getIntExtra("USER_ID", -1)
+        dbHelper = InventoryDatabaseHelper(this, userId)
+
+        // load ui
+        setContent {
+            InventoryScreen(
+                userId = userId,
+                dbHelper = dbHelper,
+                onAddItemClick = {
+                    // move to AddItem.kt
+                    val intent = Intent(this, AddItem::class.java)
+                    intent.putExtra("USER_ID", userId)
+                    startActivity(intent)
+                },
+                onEditItemClick = {
+                    // move to EditItem.kt
+                    val intent = Intent(this, EditItem::class.java)
+                    intent.putExtra("USER_ID", userId)
+                    startActivity(intent)
+                }
+            )
+        }
+    }
+}
